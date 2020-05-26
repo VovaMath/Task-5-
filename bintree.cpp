@@ -117,10 +117,21 @@ bin_tree* Bdel(bin_tree*& head, int x)
 //-----------------------------------------------
 // Ќаписать программу нахождени€ суммы весов вершин на пути
 // из корн€ в листь€ (дл€ указанного примера 0,3,0)
+// ѕусть возвращает 999999999, если такого нет
+#define INFTY 999999999
 int Indi(bin_tree*& head, int s)
 {
-    if(head == NULL) return 0;
-    return (head->id==s? head->weight: 0) + Indi(head->left,s) + Indi(head->right,s);
+    if(head == NULL) return INFTY;
+    if(head->id==s) return head->weight;
+    if(head->id <s) {
+        int t = Indi(head->right,s);
+        if(t==INFTY) return t;
+        return t+head->weight;
+    }
+    // осталс€ случай head->id >s
+    int t = Indi(head->left,s);
+    if(t==INFTY) return t;
+    return t+head->weight;
 }
 //-----------------------------------------------
 int main()
