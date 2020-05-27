@@ -49,8 +49,10 @@ typedef struct link {
 11) Написать программу нахождения суммы весов вершин на пути
     из корня в листья (для указанного примера 0,3,0)
 
+    Уточнение: вывести сумму весов всех листьев.
 
 */
+
 
 #include <iostream>
 #include <iomanip>
@@ -115,23 +117,12 @@ bin_tree* Bdel(bin_tree*& head, int x)
     return head;
 }
 //-----------------------------------------------
-// Написать программу нахождения суммы весов вершин на пути
-// из корня в листья (для указанного примера 0,3,0)
-// Пусть возвращает 999999999, если такого нет
-#define INFTY 999999999
-int Indi(bin_tree*& head, int s)
+// Уточнение. вывести сумму весов всех листьев.
+int Indi(bin_tree*& head)
 {
-    if(head == NULL) return INFTY;
-    if(head->id==s) return head->weight;
-    if(head->id <s) {
-        int t = Indi(head->right,s);
-        if(t==INFTY) return t;
-        return t+head->weight;
-    }
-    // остался случай head->id >s
-    int t = Indi(head->left,s);
-    if(t==INFTY) return t;
-    return t+head->weight;
+    if(head == NULL) return 0;
+    if( head->left==NULL && head->right==NULL) return head->weight;
+    return Indi(head->left)+Indi(head->left);
 }
 //-----------------------------------------------
 int main()
@@ -148,7 +139,7 @@ int main()
         std::cout << "1 - Insert el.\n";
         std::cout << "2 - Delele el.\n";
         std::cout << "3 - Print tree\n";
-        std::cout << "4 - Ind.task.: \n";
+        std::cout << "4 - Indiv: Sum of weights of all leaves\n";
 		std::cin >> action;
 		switch (action) {
 		case(1):
@@ -166,13 +157,34 @@ int main()
 			show(head, 1);
 			break;
 		case(4):
-			std::cout << "Value:\n";
-			cin >> x;
-		    cout << Indi(head, x);
-		    std::cout << "\n" << std::endl;
+		    cout << "\nSum of weights of all leaves=" <<Indi(head)<<"\n";
 		    break;
 		case(0):
 			return 0;
 		}
 	}
 }
+/*
+// Написать программу нахождения суммы весов вершин на пути
+// из корня в листья (для указанного примера 0,3,0)
+// Пусть возвращает 999999999, если такого нет
+//
+
+#define INFTY 999999999
+int Indi(bin_tree*& head, int s)
+{
+    if(head == NULL) return INFTY;
+    if(head->id==s) return head->weight;
+    if(head->id <s) {
+        int t = Indi(head->right,s);
+        if(t==INFTY) return t;
+        return t+head->weight;
+    }
+    // остался случай head->id >s
+    int t = Indi(head->left,s);
+    if(t==INFTY) return t;
+    return t+head->weight;
+}
+
+
+*/
