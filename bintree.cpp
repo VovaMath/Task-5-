@@ -117,12 +117,14 @@ bin_tree* Bdel(bin_tree*& head, int x)
     return head;
 }
 //-----------------------------------------------
-// Уточнение. вывести сумму весов всех листьев.
-int Indi(bin_tree*& head)
+// Если это лист, печатаем x+w
+// Если нет, вызываем для поддерева с аргументов x+w
+void Indi(bin_tree*& head, int x)
 {
-    if(head == NULL) return 0;
-    if( head->left==NULL && head->right==NULL) return head->weight;
-    return Indi(head->left)+Indi(head->left);
+    x += head->weight;
+    if(head->left == NULL && head->right==NULL) { std::cout<<x<<" "; return; }
+    if(head->left  != NULL) Indi(head->left,  x);
+    if(head->right != NULL) Indi(head->right, x);
 }
 //-----------------------------------------------
 int main()
@@ -157,7 +159,10 @@ int main()
 			show(head, 1);
 			break;
 		case(4):
-		    cout << "\nSum of weights of all leaves=" <<Indi(head)<<"\n";
+		    cout << "\nResult: ";
+		    x=0;
+		    Indi(head, x);
+		    cout << "\n";
 		    break;
 		case(0):
 			return 0;
